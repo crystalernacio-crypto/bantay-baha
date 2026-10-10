@@ -40,3 +40,5 @@ function sendReading() {
 
 setInterval(sendReading, 5000);
 console.log("IoT Sensor Simulator started. Sending readings every 5 seconds...");
+
+const API_URL = 'https://bantay-baha.onrender.com/api/readings';
