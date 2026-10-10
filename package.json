@@ -1,0 +1,26 @@
+{
+  "name": "bantay-baha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crystalernacio-crypto/bantay-baha.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/crystalernacio-crypto/bantay-baha/issues"
+  },
+  "homepage": "https://github.com/crystalernacio-crypto/bantay-baha#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  }
+}
