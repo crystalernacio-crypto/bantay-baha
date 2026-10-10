@@ -104,4 +104,5 @@
     </script>
 </body>
 </html>
+app.use(express.static('public'));
 

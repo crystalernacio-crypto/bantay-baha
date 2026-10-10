@@ -1,44 +1,50 @@
-const http = require('http');
+const API_URL = process.env.API_URL || 'http://localhost:3000/api/readings';
+let currentLevel = 80;
 
-let currentLevel = 50;
+setInterval(async () => {
+  const change = (Math.random() * 6) - 3;
+  currentLevel = Math.max(10, Math.min(250, currentLevel + change));
 
-function sendReading() {
-    const step = (Math.random() * 10) - 5;
-    currentLevel += step;
+  const payload = {
+    sensorId: 'CREEK-01',
+    waterLevelCm: parseFloat(currentLevel.toFixed(1)),
+    timestamp: new Date().toISOString()
+  };
 
-    if (currentLevel < 0) currentLevel = 0;
-    if (currentLevel > 500) currentLevel = 500;
-
-    const data = JSON.stringify({
-        sensorId: "CREEK-01",
-        waterLevelCm: parseFloat(currentLevel.toFixed(1)),
-        timestamp: new Date().toISOString()
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
+    console.log(`[Simulator] Sent level: ${payload.waterLevelCm} cm - Status: ${response.status}`);
+  } catch (err) {
+    console.error('[Simulator Error]:', err.message);
+  }
+}, 5000);
+cat << 'EOF' > simulator.js
+const API_URL = process.env.API_URL || 'http://localhost:3000/api/readings';
+let currentLevel = 80;
 
-    const options = {
-        hostname: '127.0.0.1',
-        port: 3000,
-        path: '/api/readings',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    };
+setInterval(async () => {
+  const change = (Math.random() * 6) - 3;
+  currentLevel = Math.max(10, Math.min(250, currentLevel + change));
 
-    const req = http.request(options, (res) => {
-        console.log(`Status: ${res.statusCode} - Sent level: ${currentLevel.toFixed(1)} cm`);
+  const payload = {
+    sensorId: 'CREEK-01',
+    waterLevelCm: parseFloat(currentLevel.toFixed(1)),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    req.on('error', (error) => {
-        console.error(`Error sending reading: ${error.message}`);
-    });
-
-    req.write(data);
-    req.end();
-}
-
-setInterval(sendReading, 5000);
-console.log("IoT Sensor Simulator started. Sending readings every 5 seconds...");
-
-const API_URL = 'https://bantay-baha.onrender.com/api/readings';
+    console.log(`[Simulator] Sent level: ${payload.waterLevelCm} cm - Status: ${response.status}`);
+  } catch (err) {
+    console.error('[Simulator Error]:', err.message);
+  }
+}, 5000);
+EOF
